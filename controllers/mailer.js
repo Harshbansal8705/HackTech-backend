@@ -9,7 +9,7 @@ const transporter = createTransport({
     },
 });
 
-export const sendMail = (to, otp, signup=false) => {
+exports.sendMail = async(to, otp, signup=false) => {
     const mailOptions = {
         from: `HackTech <${process.env.MAIL_USER}>`,
         to: to,
@@ -17,12 +17,15 @@ export const sendMail = (to, otp, signup=false) => {
         text: `Your OTP is ${otp}`,
     };
     
-    transporter.sendMail(mailOptions, function(error, info){
+     transporter.sendMail(mailOptions, function(error, info){
         if (error) {
             console.log(error);
+            return false;
         } else {
             console.log('Email sent: ' + info.response);
+            return true;
         }
     });
+    
 }
 

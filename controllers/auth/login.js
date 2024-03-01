@@ -1,7 +1,8 @@
 const { User } = require("../../models/User");
 const speakeasy = require("speakeasy");
 const redis = require("redis");
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const { sendMail } = require("../mailer");
 const jwtSecret = process.env.JWT_SECRET;
 exports.loginWithEmail = async (req, res) => {
     try {
@@ -30,7 +31,7 @@ exports.loginWithEmail = async (req, res) => {
 
         
 // Send OTP to user (e.g., via email or SMS)
-        verifyMail(req.body.email, otp);
+        sendMail(req.body.email, otp);
         await user.save();
         return res.status(200).json({ success: true, message: "OTP sent to your email" , code : 0 });
      } catch (e) {
