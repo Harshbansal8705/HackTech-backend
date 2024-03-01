@@ -2,6 +2,8 @@ const express = require('express')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const {client} = require("./redis")
+require('dotenv').config()
+
 const app = express()
 const PORT = 8000
 require('dotenv').config();

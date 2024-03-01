@@ -4,11 +4,10 @@ exports.register = async (req, res) => {
     try{
     const user = new User(req.body);
     try {
-        await user.validate();
+        await user.save();
     } catch (e) {
         return res.status(400).json({ success: false, message: e , code : -2 });
     }
-    await user.save();
     console.log("User registered successfully" , user);
     return res.status(200).json({ success: true, message: "User registered successfully" , code : 1 });
 }
