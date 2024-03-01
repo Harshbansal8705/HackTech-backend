@@ -1,14 +1,24 @@
 const express = require('express')
 const cors = require('cors')
 const mongoose = require('mongoose')
-
+const {client} = require("./redis")
 const app = express()
 const PORT = 8000
-
-mongoose.connect("mongodb://localhost:27017/hacktech")
+require('dotenv').config();
+mongoose.connect(process.env.MONGO_URL)
     .then(() => console.log("Connected to MongoDB!"))
     .catch(err => console.error("Could not connect to MongoDB!", err))
+try {
 
+    client.connect();
+    client.on("error", err => console.log("Redis client error: ", err));
+    client.on("connect", () => console.log("Connected to redis"));
+
+    // client.FLUSHALL();
+
+} catch (e) {
+    console.log(e)
+}
 app.use(cors())
 
 app.get('/', (req, res) => res.send('Hello World!'))
