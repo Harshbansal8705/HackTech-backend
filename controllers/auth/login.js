@@ -44,7 +44,7 @@ exports.loginWithEmail = async (req, res) => {
 exports.verifyOTPForLogin = async (req, res) => {
     try {
         const otp = req.body.otp;
-
+        const user = User.findOne({ email : req.body.email });
         if (!otp) return res.status(400).json({ success: false, message: "Please enter OTP" });
         if (!client.isOpen) return res.status(500).json({ success: false, message: "Redis client error" });
         const secret = await client.get(req.body.email, (err, res) => {
@@ -72,7 +72,7 @@ exports.verifyOTPForLogin = async (req, res) => {
               httpOnly: true,
               maxAge: maxAge , // 90days in ms
             });
-            res.status(200).json({ success: true, message: "Logged in successfully" });
+            res.status(200).json({ success: true, message: "Logged in successfully" , user: user });
         } else {
             // OTP verification failed
             res.status(400).json({ success: false, message: "Invalid OTP" });
