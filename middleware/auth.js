@@ -3,10 +3,11 @@ require("dotenv").config();
 const jwtSecret = process.env.JWT_SECRET;
 
 exports.userAuth = (req, res, next) => {
-  console.log(req.headers.cookies)
-    const token = req.cookies.jwt;
-  console.log(token)
-  try {
+  
+    try {
+      console.log(req.headers)
+        const token = req.headers.cookie.split('=')[1];
+        console.log(token);
     if (token) {
 
       jwt.verify(token, jwtSecret, (err, decodedToken) => {

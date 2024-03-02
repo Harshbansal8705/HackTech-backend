@@ -1,9 +1,9 @@
 const { User } = require("../../models/User");
 const speakeasy = require("speakeasy");
-const redis = require("redis");
 const jwt = require('jsonwebtoken');
 const { sendMail } = require("../mailer");
 const jwtSecret = process.env.JWT_SECRET;
+const { client } = require("../../redis");
 exports.loginWithEmail = async (req, res) => {
     try {
         if (!req.body.email) return res.status(400).json({ success: false, message: "Please enter email" , code : 1});
@@ -19,6 +19,7 @@ exports.loginWithEmail = async (req, res) => {
             secret: secret.base32,
             encoding: "base32"
         });
+        console.log(otp);
         // save the secret key in the user object or database
         if (!client.isOpen) return res.status(500).json({ success: false, message: "Redis client error" , code : -4  });
         await client.set(user.email,  secret.base32, { EX: process.env.OTP_EXPIRE_TIME }, (err, res) => {
@@ -42,6 +43,8 @@ exports.loginWithEmail = async (req, res) => {
 
 exports.verifyOTPForLogin = async (req, res) => {
     try {
+        const otp = req.body.otp;
+
         if (!otp) return res.status(400).json({ success: false, message: "Please enter OTP" });
         if (!client.isOpen) return res.status(500).json({ success: false, message: "Redis client error" });
         const secret = await client.get(req.body.email, (err, res) => {

@@ -7,11 +7,11 @@ const { userAuth } = require('../../middleware/auth');
 const { getUser } = require('../getuser');
 const router = express.Router();
 
-router.route('/login').post(loginWithEmail)
+router.route('/login/otp').post(loginWithEmail)
 router.route('/login/verify').post(verifyOTPForLogin);
-router.route('/register').post(register);
+router.route('/register').post(userAuth, register);
 router.route('/register/verify').post(verifyOTPForSignup)
-router.route('/send/mail').post(SendMail);
-router.route('/get/user').get(userAuth , getUser);
+router.route('/register/otp').post(SendMail);
+router.route('/user').get(userAuth , getUser);
 
 module.exports = router;
