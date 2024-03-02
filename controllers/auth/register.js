@@ -16,7 +16,7 @@ exports.register = async (req, res) => {
 }
 catch(e){
     console.log('error in register is '+ e);
-    return res.status(411).json({success : false , message : 'error : ' +e , code : -1})
+    return res.status(411).json({success : false , error : e , code : -1})
 }
 }
 exports.verifyOTPForSignup = async (req, res) => {
