@@ -27,11 +27,13 @@ const userSchema = new Schema({
     },
     sg: {
         type: [Number],
-        required: [true, "SG is required!"]
+        required: [true, "SG is required!"],
+        default : [0,0,0,0,0,0,0,0,0,0]
     },
     cg: {
         type: Number,
-        required: [true, "CG is required!"]
+        required: [true, "CG is required!"],
+        default : 10
     }
 }, {
     virtuals: {

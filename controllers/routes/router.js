@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.route('/login/otp').post(loginWithEmail)
 router.route('/login/verify').post(verifyOTPForLogin);
-router.route('/register').post(userAuth, register);
+router.route('/register').post( register);
 router.route('/register/verify').post(verifyOTPForSignup)
 router.route('/register/otp').post(SendMail);
 router.route('/user').get(userAuth , getUser);
